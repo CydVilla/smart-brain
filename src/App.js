@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Particles from "react-particles-js";
-import Clarifai, {FACE_DETECT_MODEL } from 'clarifai'
+import Clarifai from "clarifai";
 import "./App.css";
 import Navigation from "./components/Navigation";
 import ImageLinkForm from "./components/ImageLinkForm";
-import FaceRecognition from './components/FaceRecognition'
+import FaceRecognition from "./components/FaceRecognition";
 import Rank from "./components/Rank";
 import Logo from "./Logo/Logo";
 
@@ -24,34 +24,49 @@ const particlesOptions = {
   },
 };
 
+
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
       input: "",
-      imageUrl: ''
+      imageUrl: "",
+      box: {}
     };
   }
 
+  calculateFaceLocation = (data) => {
+    const claraifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputimage')
+    const width = Number(image.width)
+    const height = Number(image.height)
+    return {
+      leftCol: claraifaiFace.left_col * width,
+      topRow: claraifaiFace.top_row * height,
+      rightCol: width - (claraifaiFace.right_col * width),
+      bottomRow: height - (claraifaiFace.bottom_row * height)
+    }
+  };
+
+  displayFaceBox = (box) => {
+    console.log(box)
+    this.setState({box: box});
+  }
+
   onInputChange = (event) => {
-    this.setState({input: event.target.value});
+    this.setState({ input: event.target.value });
   };
 
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input})
-    console.log("click");
+    this.setState({ imageUrl: this.state.input });
     app.models
       .predict(
         Clarifai.FACE_DETECT_MODEL,
+        // c0c0ac362b03416da06ab3fa36fb58e3
         this.state.input)
-      .then(
-        function(response) {
-          console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
-        },
-        function(err) {
-          // there was an error
-        }
-        );
+      .then((response) => this.displayFaceBox(this.calculateFaceLocation(response)))
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -65,7 +80,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
-        <FaceRecognition imageUrl={this.state.imageUrl}/>
+        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
       </div>
     );
   }
