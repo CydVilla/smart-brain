@@ -9,12 +9,12 @@ class Register extends React.Component {
       name: '' ,
     };
   }
-
-  onEmailChange = (event) => {
+  
+  onNameChange = (event) => {
     this.setState({ name: event.target.value });
   };
 
-  onPasswordChange = (event) => {
+  onEmailChange = (event) => {
     this.setState({ email: event.target.value });
   };
 
@@ -23,7 +23,7 @@ class Register extends React.Component {
   };
 
   onSubmitSignIn = () => {
-    fetch("http://localhost:3000/register", {
+    fetch('http://localhost:3000/register', {
       method: 'post',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
