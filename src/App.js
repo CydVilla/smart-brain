@@ -100,7 +100,7 @@ loadUser = (data) => {
           .then(count => {
             this.setState(Object.assign(this.state.user, { entries: count }))
           })
-          
+          .catch(console.log)
         }
         this.displayFaceBox(this.calculateFaceLocation(response))
       })
@@ -109,9 +109,9 @@ loadUser = (data) => {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({initialState})
+      this.setState(initialState)
     } else if (route === 'home') {
-      this.setState({initialState})
+      this.setState({isSignedIn: true})
     }
     this.setState({route: route});
   }
