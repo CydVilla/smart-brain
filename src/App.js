@@ -16,9 +16,9 @@ const particlesOptions = {
       density: {
         enable: true,
         value_area: 800,
-      },
-    },
-  },
+      }
+    }
+  }
 };
 
 const initialState = {
