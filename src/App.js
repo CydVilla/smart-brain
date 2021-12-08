@@ -77,7 +77,7 @@ loadUser = (data) => {
 
   onPictureSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-    fetch('https://hidden-reef-89104.herokuapp.com/imageurl', {
+    fetch('http://localhost:3000/imageurl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -87,7 +87,7 @@ loadUser = (data) => {
     .then(response => response.json())
      .then(response => {
         if (response) {
-          fetch('https://hidden-reef-89104.herokuapp.com/:3000/image', {
+          fetch('http://localhost:3000/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
