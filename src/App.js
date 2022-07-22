@@ -55,8 +55,7 @@ class App extends Component {
   };
 
   calculateFaceLocation = (data) => {
-    const claraifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
+    const claraifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputimage");
     const width = Number(image.width);
     const height = Number(image.height);
@@ -85,8 +84,8 @@ class App extends Component {
         input: this.state.input
       })
     })
-      .then((response) => response.json())
-      .then((response) => {
+      .then(response => response.json())
+      .then(response => {
         if (response) {
           fetch('https://immense-mesa-72945.herokuapp.com/image', {
             method: "put",
@@ -95,15 +94,15 @@ class App extends Component {
               id: this.state.user.id,
             })
           })
-            .then((response) => response.json())
-            .then((count) => {
+            .then(response => response.json())
+            .then(count => {
               this.setState(Object.assign(this.state.user, { entries: count }));
             })
             .catch(console.log);
         }
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err))
   };
 
   onRouteChange = (route) => {
